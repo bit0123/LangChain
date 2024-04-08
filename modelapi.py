@@ -6,7 +6,7 @@ from fastapi import FastAPI
 load_dotenv()
 
 api = FastAPI()
-llm = OpenAI(temperature=.9)
+llm = OpenAI(model="gpt-3.5-turbo-instruct", temperature=.9)
 
 @api.get('/ask_openai')
 async def ask_openai(question:str):
