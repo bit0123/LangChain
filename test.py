@@ -1,4 +1,3 @@
-import requests
 import streamlit as st
 from model import ask_openai
 
