@@ -2,6 +2,14 @@
 This repository provides sample code for developing Chat application using Langchain framework (OpenAI). For GUI development Streamlit has been used. Furthermore, to demonstrate web API based application, FastAPI has ben employed. 
 
 
+
+## Output
+<p align="center" style="text-align: center;">
+    <img src="imgs/langchain.png"/>
+</p>
+
+
+
 ## Running Streamlit Application:
 ```
 streamlit run test.py
