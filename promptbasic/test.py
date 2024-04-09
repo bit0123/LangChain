@@ -3,10 +3,10 @@ from model import ask_openai
 
 st.title("LangChain::StreamLit Test App.")
 
-question = st.text_input("Enter your Question:")
+prompt = st.text_input("Enter your Prompt:")
 submit = st.button("Submit")
 
 if submit:
     st.text("")
-    response = ask_openai(question)
+    response = ask_openai(prompt)
     st.text(response)

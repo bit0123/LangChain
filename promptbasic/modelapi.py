@@ -8,6 +8,6 @@ api = FastAPI()
 llm = OpenAI(model="gpt-3.5-turbo-instruct", temperature=.9)
 
 @api.get('/ask_openai')
-async def ask_openai(question:str):
-    response = llm(question)
+async def ask_openai(prompt:str):
+    response = llm(prompt)
     return response
