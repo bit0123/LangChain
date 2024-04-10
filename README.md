@@ -13,6 +13,18 @@ This repository provides sample code for developing Chat application using Langc
 </p>
 
 
+## Dependencies:
+This repository is dependent on the following packages:
+- langchain
+- openai
+- streamlit
+- fastapi
+- faiss-client
+- pypdf
+- python-dotenv
+- Requests
+
+
 ## Running Streamlit Application:
 ```
 streamlit run test.py
