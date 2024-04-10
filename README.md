@@ -8,6 +8,9 @@ This repository provides sample code for developing Chat application using Langc
     <img src="imgs/langchain.png"/>
 </p>
 
+<p align="center" style="text-align: center;">
+    <img src="imgs/chatwithpdf.png"/>
+</p>
 
 
 ## Running Streamlit Application:

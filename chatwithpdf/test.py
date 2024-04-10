@@ -4,7 +4,7 @@ from model import ChatBot
 
 chatbot = ChatBot()
 
-st.title("Chat with Pdf using LangChain::Streamlit::FIIS")
+st.title("Chat with Pdf using LangChain::Streamlit::FAIIS")
 
 st.header("Select Pdf to Upload")
 file = st.file_uploader("Upload File", type="pdf")
