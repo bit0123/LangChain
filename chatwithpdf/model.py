@@ -27,36 +27,51 @@ class ChatBot:
         self.chain = load_qa_chain(llm, chain_type="stuff")
 
 
-    def process_pdf_file(self, file:str):
-
-        file_name = file.name[:-4]
-
+    def read_pdf_file(self, file:str):
         reader = PdfReader(file)
         text = ""
         for page in reader.pages:
             text += page.extract_text()
 
-        text_chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_text(text)
+        return text
+    
 
-        if os.path.exists(f"{file_name}.pkl"):
-            with open(f"{file_name}.pkl", "rb") as f:
-                self.chunks_embeddings = pickle.load(f)
-            print("Embedding Loaded from the disk.")
+    def create_text_embedding(self, file: str):
+        text = self.read_pdf_file(file)
+        text_chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_text(text)
+        embedding = OpenAIEmbeddings()
+        self.chunks_embeddings = FAISS.from_texts(text_chunks, embedding=embedding)
+    
+
+    def save_embedding(self, file_name=str):
+        with open(f"{file_name}.pkl", "wb") as f:
+            pickle.dump(self.chunks_embeddings, f)
+        print("Embedding Stored in the disk.")
+
+
+    def load_embedding(self, file_name=str):
+        with open(f"{file_name}.pkl", "rb") as f:
+            self.chunks_embeddings = pickle.load(f)
+        print("Embedding Loaded from the disk.")
+
+    def is_embedding_available(self, file_name:str):
+        is_available = os.path.exists(f"{file_name}.pkl")
+        return is_available
+
+    def process_pdf_file(self, file:str):
+
+        file_name = file.name[:-4]
+
+        if self.is_embedding_available(file_name) :
+            self.load_embedding(file_name)
         else:
-            embedding = OpenAIEmbeddings()
-            self.chunks_embeddings = FAISS.from_texts(text_chunks, embedding=embedding)
-            with open(f"{file_name}.pkl", "wb") as f:
-                pickle.dump(self.chunks_embeddings, f)
-        
-            print("Embedding Stored in the disk.")
+            self.create_text_embedding(file)
+            self.save_embedding(file_name)
 
 
     def ask_query(self, query:str):
-        similar_chunks = self.chunks_embeddings.similarity_search(query=query)
-        # qa_chain = ConversationalRetrievalChain.from_llm(llm, retriever=chunks_embeddings.as_retriever(), get_chat_history=lambda h : h, condense_question_prompt=prompt, memory = memory)
-        
+        similar_chunks = self.chunks_embeddings.similarity_search(query=query)        
         response = self.chain.run(input_documents=similar_chunks, question=query, return_answer_only=True)
-        # response = qa_chain({"question":query}, return_answer_only=True)
 
         return response
 
